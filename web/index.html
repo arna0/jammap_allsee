@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>JamMap</title>
+  <meta name="description" content="Ground-level map of GPS jamming and spoofing, measured by Android phones and confirmed on Solana." />
+  <link rel="icon" href="logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="bar">
+    <a class="wordmark" href="/" aria-label="JamMap home">
+      <img src="logo.svg" alt="" width="22" height="22" />
+      <span>JamMap</span>
+    </a>
+    <nav class="tabs" role="tablist" aria-label="Views">
+      <button role="tab" id="tab-live" aria-controls="view-live" aria-selected="true">Live map</button>
+      <button role="tab" id="tab-route" aria-controls="view-route" aria-selected="false" tabindex="-1">Route check</button>
+      <button role="tab" id="tab-api" aria-controls="view-api" aria-selected="false" tabindex="-1">Data API</button>
+    </nav>
+    <div class="netstatus">
+      <span class="sensors"><i class="dot" aria-hidden="true"></i><b id="sensorsOnline">0</b> sensors online</span>
+      <a id="network" class="network" target="_blank" rel="noopener">Local mode</a>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="mapwrap" aria-label="Map">
+      <div id="map"></div>
+      <div class="legend" aria-label="Legend">
+        <span><i class="sw jam"></i>Jamming</span>
+        <span><i class="sw spoof"></i>Spoofing</span>
+        <span><i class="sw pend"></i>Unconfirmed</span>
+        <span><i class="sw sensor"></i>Sensor</span>
+      </div>
+      <p id="routeHint" class="maphint" hidden>Click the map to set the start point.</p>
+    </section>
+
+    <aside class="panel">
+      <!-- Live -->
+      <section id="view-live" role="tabpanel" aria-labelledby="tab-live" class="view">
+        <div id="listView">
+          <dl class="kpis">
+            <div><dt>Reports</dt><dd data-k="reports">0</dd></div>
+            <div><dt>Confirmed</dt><dd data-k="confirmed">0</dd></div>
+            <div><dt>Unconfirmed</dt><dd data-k="unconfirmed">0</dd></div>
+            <div><dt>On-chain txs</dt><dd data-k="onchainTxs">0</dd></div>
+          </dl>
+
+          <h2 class="section">Incidents <span>last 24 h</span></h2>
+          <ul id="incidents" class="incidents"></ul>
+
+          <h2 class="section">Recent reports</h2>
+          <table class="reports">
+            <thead><tr><th>Time</th><th>Type</th><th>Sensor</th><th>Record</th></tr></thead>
+            <tbody id="feed"></tbody>
+          </table>
+        </div>
+
+        <div id="detailView" hidden>
+          <button id="backBtn" class="link" type="button">← All incidents</button>
+          <div id="detail"></div>
+        </div>
+      </section>
+
+      <!-- Route -->
+      <section id="view-route" role="tabpanel" aria-labelledby="tab-route" class="view" hidden>
+        <h2 class="title">Route check</h2>
+        <p class="lead">Check a drone flight or a truck route against interference reported in the last 24 hours. Click the map to set the start and end points.</p>
+        <div class="fields">
+          <label>From <output id="fromOut">—</output></label>
+          <label>To <output id="toOut">—</output></label>
+          <label>Corridor
+            <select id="corridor">
+              <option value="0.5">±0.5 km</option>
+              <option value="1" selected>±1 km</option>
+              <option value="2">±2 km</option>
+              <option value="5">±5 km</option>
+            </select>
+          </label>
+        </div>
+        <div class="actions">
+          <button id="routeBtn" class="primary" type="button" disabled>Check route · <span class="price">$0.01</span></button>
+          <button id="routeClear" class="ghost" type="button">Clear</button>
+        </div>
+        <div id="routeOut" aria-live="polite"></div>
+      </section>
+
+      <!-- API -->
+      <section id="view-api" role="tabpanel" aria-labelledby="tab-api" class="view" hidden>
+        <h2 class="title">Data API</h2>
+        <p class="lead">Pay per request in USDC on Solana using <a href="https://www.x402.org" target="_blank" rel="noopener">x402</a>. No account and no API key: the client receives <code>402 Payment Required</code>, signs a USDC transfer and repeats the request with an <code>X-PAYMENT</code> header.</p>
+
+        <table class="endpoints">
+          <thead><tr><th>Endpoint</th><th>Price</th></tr></thead>
+          <tbody>
+            <tr><td><code>GET /v1/risk?lat&amp;lon&amp;radius_km</code><small>Risk score, incidents and estimated source locations around a point</small></td><td class="num price">$0.01</td></tr>
+            <tr><td><code>GET /v1/route?from&amp;to&amp;corridor_km</code><small>Interference exposure along a straight route</small></td><td class="num price">$0.01</td></tr>
+            <tr><td><code>GET /v1/map</code><small>Zone-level public map</small></td><td class="num">Free</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="sub">Example</h3>
+        <pre class="code"><code>$ curl -i "$JAMMAP/v1/risk?lat=42.32&amp;lon=69.62"
+HTTP/1.1 402 Payment Required
+{"accepts":[{"scheme":"exact","network":"solana-devnet",
+  "maxAmountRequired":"10000","asset":"USDC", ...}]}
+
+$ curl -H "X-PAYMENT: &lt;signed USDC transfer&gt;" ...
+HTTP/1.1 200 OK
+{"risk":{"score":82,"level":"high"},"incidents":[...]}</code></pre>
+
+        <div class="actions">
+          <button id="apiTry" class="primary" type="button">Request /v1/risk at map center</button>
+        </div>
+        <div id="apiOut" aria-live="polite"></div>
+      </section>
+
+      <p id="demoNote" class="demonote" hidden>Demo mode: sensors are simulated and payments are not settled on-chain.</p>
+    </aside>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="app.js"></script>
+</body>
+</html>

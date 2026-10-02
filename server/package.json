@@ -1,0 +1,23 @@
+{
+  "name": "jammap-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "JamMap relayer, x402 data API, simulator and dashboard host",
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env src/index.js",
+    "demo": "node --env-file-if-exists=.env src/index.js --demo",
+    "sim": "node --env-file-if-exists=.env src/sim.js",
+    "buy": "node --env-file-if-exists=.env src/buyer.js",
+    "setup:devnet": "node --env-file-if-exists=.env scripts/setup-devnet.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@solana/spl-token": "^0.4.13",
+    "@solana/web3.js": "^1.98.2",
+    "bs58": "^6.0.0",
+    "tweetnacl": "^1.0.3"
+  }
+}

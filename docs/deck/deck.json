@@ -1,0 +1,18 @@
+{
+  "v": 4,
+  "createdOnFiles": { "v": 1, "at": "2026-10-02T12:00:00Z" },
+  "lists": "css",
+  "title": "JamMap pitch deck",
+  "cover": "cover",
+  "order": ["cover", "problem", "gap", "insight", "how", "product", "crypto", "customers", "landscape", "traction", "team"],
+  "sections": {
+    "s1": { "description": "GPS interference is growing and nobody measures it on the ground", "start": "cover" },
+    "s2": { "description": "Phones can detect it; JamMap confirms it on Solana and sells the data", "start": "insight" },
+    "s3": { "description": "Customers, competition, traction and team", "start": "customers" }
+  },
+  "faces": {
+    "ibm-plex-sans": { "family": "IBM Plex Sans", "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" },
+    "ibm-plex-mono": { "family": "IBM Plex Mono", "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" }
+  },
+  "designSystems": []
+}

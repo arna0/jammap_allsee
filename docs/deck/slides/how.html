@@ -1,0 +1,28 @@
+<section id="how" data-transition="fade" style="background:#F6F7F9;color:#121519;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:space-between;gap:48px">
+<h2 style="font-size:64px;font-weight:600;line-height:1.1;letter-spacing:-1px">How JamMap works</h2>
+<div style="display:flex;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FDFDFC;border:1px solid #E3E6EA;border-radius:12px;padding:40px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;color:#D0353B">01</p>
+<h3 style="font-size:40px;font-weight:600">Detect</h3>
+<p style="font-size:28px;line-height:1.4;color:#4F5862">The app checks the satellite signal every second and flags jamming or spoofing.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FDFDFC;border:1px solid #E3E6EA;border-radius:12px;padding:40px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;color:#D0353B">02</p>
+<h3 style="font-size:40px;font-weight:600">Sign</h3>
+<p style="font-size:28px;line-height:1.4;color:#4F5862">The phone signs a short report with its own key. It needs no wallet and no SOL.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FDFDFC;border:1px solid #E3E6EA;border-radius:12px;padding:40px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;color:#D0353B">03</p>
+<h3 style="font-size:40px;font-weight:600">Confirm</h3>
+<p style="font-size:28px;line-height:1.4;color:#4F5862">A Solana program checks every signature and confirms the incident once 3 different phones agree.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FDFDFC;border:1px solid #E3E6EA;border-radius:12px;padding:40px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;color:#D0353B">04</p>
+<h3 style="font-size:40px;font-weight:600">Sell</h3>
+<p style="font-size:28px;line-height:1.4;color:#4F5862">Drone and fleet software pays 1 cent in USDC per query. No account, no API key.</p>
+</div>
+</div>
+<p style="font-size:32px;color:#4F5862">The app only listens. It never transmits anything.</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;text-align:right;font-size:24px;color:#6B7480">05</p>
+<aside>Four steps. One: the phone checks the signal every second. Two: when it sees jamming or spoofing, it signs a short report with its own key. The phone doesn't need a wallet or any SOL; our relayer pays the fee. Three: a program on Solana checks that signature itself, so even we can't fake a report, and it only confirms an incident when three different phones see it. Four: drone and fleet software buys the data per request, one cent in USDC, using the x402 payment standard. And to be clear: the app only listens, it never transmits.</aside>
+</section>

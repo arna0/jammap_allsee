@@ -1,0 +1,14 @@
+<section id="insight" data-transition="fade" style="background:#F6F7F9;color:#121519;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<h2 style="font-size:64px;font-weight:600;line-height:1.1;letter-spacing:-1px">Every Android phone is already a GPS sensor</h2>
+<p style="font-size:32px;line-height:1.4;color:#4F5862;width:1500px">Android exposes raw satellite measurements. Two of them tell a real attack apart from a phone in a pocket.</p>
+<table style="font-size:32px;color:#121519;font-family:'IBM Plex Sans', Arial, sans-serif">
+<tr><th style="width:34%">What happens</th><th style="width:24%">Signal-to-noise</th><th style="width:24%">Receiver gain</th><th style="width:18%">JamMap</th></tr>
+<tr><td>Jamming</td><td>Drops</td><td>Drops</td><td style="color:#D0353B">Reports</td></tr>
+<tr><td>Spoofing</td><td>Rises, uniform</td><td>Drops</td><td style="color:#7A3CBF">Reports</td></tr>
+<tr><td>Phone in a pocket or tunnel</td><td>Drops</td><td>Rises</td><td style="color:#4F5862">Ignores</td></tr>
+</table>
+<div style="flex:1"></div>
+<p style="position:absolute;left:128px;bottom:64px;width:1400px;font-size:24px;color:#6B7480">Method: developer.android.com/develop/sensors-and-location/sensors/gnss-spoof-jam</p>
+<p style="position:absolute;right:128px;bottom:64px;width:120px;text-align:right;font-size:24px;color:#6B7480">04</p>
+<aside>Here is the insight. Billions of Android phones already contain a GNSS receiver, and Android lets apps read raw satellite measurements. Two numbers matter. Signal-to-noise per satellite, and the receiver's automatic gain. When someone jams, noise floods the antenna: signal-to-noise drops and the receiver turns its gain down. When a phone is just in a pocket, signal also drops, but the receiver turns the gain up. That difference is what lets us avoid false alarms.</aside>
+</section>
